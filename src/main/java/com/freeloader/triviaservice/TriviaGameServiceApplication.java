@@ -1,4 +1,4 @@
-package com.freeloader.conversionservice;
+package com.freeloader.triviaservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
