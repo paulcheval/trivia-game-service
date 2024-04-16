@@ -1,30 +1,25 @@
 package com.freeloader.triviaservice.service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-
 import com.freeloader.triviaservice.entities.HighScore;
-import com.freeloader.triviaservice.model.HighScoreDetail;
 import com.freeloader.triviaservice.model.HighScoreResponse;
 import com.freeloader.triviaservice.repository.HighScoreRepository;
+import com.freeloader.triviaservice.util.RankingHelper;
 
 @Service
 public class HighScoreServiceImpl implements HighScoreService {
-	
+
 	private HighScoreRepository repository;
-	
+	private RankingHelper objectConversion;
 
-	public HighScoreServiceImpl(HighScoreRepository repository) {		
+	public HighScoreServiceImpl(HighScoreRepository repository, RankingHelper objectConversion) {
 		this.repository = repository;
+		this.objectConversion = objectConversion;
 	}
-
 
 	@Override
 	public HighScoreResponse getAllHighScores() {
@@ -39,12 +34,7 @@ public class HighScoreServiceImpl implements HighScoreService {
 			allHighScoresList.add(score);
 		});
 
-		List<HighScoreDetail> sortedHighScores = allHighScoresList.stream()
-				.sorted(Comparator.comparing(HighScore::getRanking))
-				.map(score -> new HighScoreDetail(score.getName(), score.getScore(), score.getDate().toString(), score.getRanking()))
-				.collect(Collectors.toList());
-		return new HighScoreResponse(sortedHighScores);
+		return new HighScoreResponse(objectConversion.convertHighScoreToHighScoreDetail(allHighScoresList));
 	}
-		
 
 }

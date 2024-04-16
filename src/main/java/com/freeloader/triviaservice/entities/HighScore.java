@@ -21,9 +21,9 @@ public class HighScore {
 	private Long id;
 	
 	private String name;
-	private Long score;
+	private int score;
 	private LocalDate date;
-	private int ranking;
+
 	
 	protected HighScore() {}
 	
@@ -33,10 +33,10 @@ public class HighScore {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Long getScore() {
+	public int getScore() {
 		return score;
 	}
-	public void setScore(Long score) {
+	public void setScore(int score) {
 		this.score = score;
 	}
 	
@@ -48,32 +48,23 @@ public class HighScore {
 	}
 
 	
-	public int getRanking() {
-		return ranking;
-	}
-	public void setRanking(int ranking) {
-		this.ranking = ranking;
-	}
-	
-	public HighScore(String name, Long score, LocalDate date, int ranking) {
+	public HighScore(String name, int score, LocalDate date) {
 		super();
 		this.name = name;
 		this.score = score;
 		this.date = date;
-		this.ranking = ranking;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, date, name, ranking, score);
+		return Objects.hash(id, date, name, score);
 	}
-	
+
 	@Override
 	public String toString() {
-		return "HighScores [id=" + id + ", name=" + name + ", score=" + score + ", date=" + date + ", ranking="
-				+ ranking + "]";
+		return "HighScore [id=" + id + ", name=" + name + ", score=" + score + ", date=" + date + "]";
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -83,7 +74,7 @@ public class HighScore {
 		if (getClass() != obj.getClass())
 			return false;
 		HighScore other = (HighScore) obj;
-		return Objects.equals(date, other.date) && Objects.equals(name, other.name) && ranking == other.ranking
+		return Objects.equals(date, other.date) && Objects.equals(name, other.name)
 				&& Objects.equals(score, other.score);
 	}	
 	
