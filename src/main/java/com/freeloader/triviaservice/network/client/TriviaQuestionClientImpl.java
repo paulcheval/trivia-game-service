@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.freeloader.triviaservice.model.TriviaItem;
-
 @Component
 public class TriviaQuestionClientImpl  implements TriviaQuestionClient{
 	

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.freeloader.triviaservice.model.HighScoreRequest;
 import com.freeloader.triviaservice.model.HighScoreResponse;
-import com.freeloader.triviaservice.netowrk.model.TriviaQuestionAnswer;
+import com.freeloader.triviaservice.model.TriviaQuestionAnswer;
 
 public interface HighScoreService {
 	public HighScoreResponse getAllHighScores();
