@@ -13,4 +13,7 @@ import com.freeloader.triviaservice.entities.HighScore;
 public interface HighScoreRepository extends CrudRepository<HighScore, Long> {
 			
 	
+	List<HighScore> findByNameAndScore(String name, int score);
+	
+	
 }
