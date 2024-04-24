@@ -1,5 +1,7 @@
 package com.freeloader.triviaservice.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -8,9 +10,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.freeloader.triviaservice.exception.HighScoreNotConsideredForAdding;
 import com.freeloader.triviaservice.model.HighScoreRequest;
 import com.freeloader.triviaservice.model.HighScoreResponse;
+import com.freeloader.triviaservice.netowrk.model.TriviaQuestionAnswer;
+import com.freeloader.triviaservice.netowrk.model.TriviaQuestionAnswers;
 import com.freeloader.triviaservice.service.HighScoreService;
+import com.freeloader.triviaservice.service.QuestionAndAnswerService;
 
 @RestController
 @CrossOrigin
@@ -19,10 +25,12 @@ public class HighScoreControllerImpl implements HighScoreController {
 	
 
 	private HighScoreService service;
+	private QuestionAndAnswerService questionService;
 	
-	public HighScoreControllerImpl(HighScoreService service) {
+	public HighScoreControllerImpl(HighScoreService service, QuestionAndAnswerService questionService) {
 		super();
 		this.service = service;
+		this.questionService = questionService;
 	}
 
 	@Override
@@ -40,18 +48,33 @@ public class HighScoreControllerImpl implements HighScoreController {
 	}
 
 	@Override
-	public ResponseEntity<Void> addHighScore(@RequestBody HighScoreRequest highScoreRequest) {
+	public ResponseEntity<String> addHighScore(@RequestBody HighScoreRequest highScoreRequest) {
 		log.info("Add High Score Service Being called with: " + highScoreRequest.toString());
 		try {	
 			validateHighScore(highScoreRequest);
 			service.addHighScore(highScoreRequest);
 		} catch (IllegalArgumentException e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		} catch (HighScoreNotConsideredForAdding e)  {
+			log.info("High Score too low to be considered for inclusion in highscore list " + highScoreRequest.toString());
+			return new ResponseEntity<String>("High Score Not Considered for Adding", HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		log.info("High Score Added " + highScoreRequest.toString() + " successfully.");
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		return new ResponseEntity<String>(HttpStatus.CREATED);
+	}
+	
+	@Override
+	public ResponseEntity<TriviaQuestionAnswers> retrieveQuestions() {
+		log.info("Retrieve Questions Service Being called ");
+		TriviaQuestionAnswers response;
+		try {
+			response = questionService.retrieveQuestions();
+		} catch (Exception e) {
+			return new ResponseEntity<TriviaQuestionAnswers>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<TriviaQuestionAnswers>(response, HttpStatus.OK);	
 	}
 
 	private void validateHighScore(HighScoreRequest highScoreRequest) throws IllegalArgumentException {
@@ -68,5 +91,7 @@ public class HighScoreControllerImpl implements HighScoreController {
 		}
 		
 	}
+
+
 
 }
