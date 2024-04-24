@@ -1,9 +1,10 @@
-package com.freeloader.triviaservice.model;
+package com.freeloader.triviaservice.network.client;
 
 import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.freeloader.triviaservice.model.Question;
 
 @JsonIgnoreProperties
 public class TriviaItem {

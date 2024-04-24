@@ -1,4 +1,4 @@
-package com.freeloader.triviaservice.netowrk.model;
+package com.freeloader.triviaservice.model;
 
 import java.util.List;
 

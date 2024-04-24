@@ -12,7 +12,7 @@ import com.freeloader.triviaservice.model.HighScoreDetail;
 
 @Component
 public class RankingHelper {
-	
+
 	public List<HighScoreDetail> convertHighScoreToHighScoreDetail(List<HighScore> highScores) {
 		return highScores.stream().sorted(Comparator.comparing(HighScore::getScore).reversed())
 				.map(new Function<HighScore, HighScoreDetail>() {
